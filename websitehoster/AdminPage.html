@@ -1,0 +1,267 @@
+<html>
+<head>
+  <title>WILSON INTERIOR</title>
+</head>
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.product {
+    margin: 20px;
+    width: 200px;
+    transition: transform 0.2s;
+}
+
+.product:hover {
+    transform: scale(1.1);
+}
+
+.product img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+#cart {
+    display: none;
+    padding: 20px;
+}
+
+#cart-items {
+    padding: 20px;
+}
+
+#checkout-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#AlertDiv {
+  width: 300px;
+  background-color: brown;
+  display: none;
+}
+#paymentSection {
+  display: none;
+}
+
+</style>
+  <body>
+    <header>
+        <nav>
+            <h1>WILSON INTERIOR</h1>
+            <ul>
+                <li><a href=""></a></li>                           
+                <li><a href="#cart">Cart (0)</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h3 id="tel1">hello world</h3>
+        <br><br>
+        
+        <section id="catalogProfile">
+            <input type="file" id="demo" onchange="catalogReaderFile();" />
+            <br><br>
+            <img src="" alt="The image file will be shown here." class="product" id="result" />
+        </section>
+            
+        <section id="catalogSetUpSection" style="display: none;">
+            <br><br><br>
+            <input type="file" id="demo2" onchange="generalReaderFile();" />
+            <br><br>
+            <img src="" alt="The image file will be shown here." class="product" id="result2" />
+            
+            <input type="text" placeholder="ENTER NAME OF PRODUCT" id="name" />
+            <input placeholder="ENTER PRICE OF PRODUCT" type="text" id="price" />
+            <input placeholder="ENTER PRICE OF PRODUCT" type="text" id="quantity" style="display: none;" />
+            
+            <button id="quantityEnableBtn" onclick="quantityEnableFunc();" >quantityEnable</button>
+            
+        </section>
+        
+        <section id="catalogListSection" style="display: none;">
+            <!-- Products will be dynamically generated -->
+      <!-- you should pick an image file for this demo to work -->
+        </section>
+        
+        <br><br>
+        <button id="creatCatalogBtn" onclick="testFunc()"style="display: none;" >creatCatalog</button>
+  
+    </main>
+
+</body>
+    <script>
+    
+  let theIds = ["tel1","catalogProfile","catalogSetUpSection","catalogListSection","creatCatalogBtn","quantity"];
+  
+  theIds.forEach((item) => {
+    item = document.getElementById(item);
+  });
+  
+  let productsList = [];
+  let catalogList = [];
+  
+  let quantityEnable = false;
+  let getSrc = "";
+  let getName = "";
+  
+  let getSrc2 = "";
+  let getName2 = "";
+  
+    function catalogReaderFile() {
+      var reader = new FileReader();
+      var file = document.getElementById('demo').files[0];
+      
+      getName = file;
+       // console.log(getName);
+      reader.onload = function(e) {
+        document.getElementById('result').src = e.target.result;
+        getSrc = e.target.result;
+        
+        catalogSetUpSection.style.display = "block";
+        console.log(getSrc);
+      }
+  
+      reader.readAsDataURL(file);
+    }
+    function generalReaderFile() {
+      var reader = new FileReader();
+      var file = document.getElementById('demo2').files[0];
+      
+      getName2 = file;
+      
+       // console.log(getName2);
+      reader.onload = function(e) {
+        document.getElementById('result2').src = e.target.result;
+        creatCatalogBtn.style.display = "block";
+        getSrc2 = e.target.result;
+       // console.log(getSrc2);
+      }
+  
+      reader.readAsDataURL(file);
+    }
+    
+    function quantityEnableFunc(){
+      if(quantityEnable){
+        quantityEnable = false;
+        quantity.style.display = "none";
+      }else{
+        quantityEnable = true;
+        quantity.style.display = "block";
+      }
+    }
+    
+    function testFunc(){
+      catalogListSection.style.display = "block";
+      let name = document.getElementById("name");
+      let price = document.getElementById("price");
+      
+     // console.log(getName2,getSrc2);
+      let idNo = productsList.length;
+      
+      if(quantityEnable === true){
+          let propt = { id: idNo, name: name.value, price: price.value, image: getSrc2, quantity: quantity.value };
+        
+          catalogList.push(propt);
+          
+     // create the element to be visible
+   /*
+    catalogListSection.innerHTML += `
+        <div class="product">
+            <img src="./${folderdataBase}/${item.image}" alt="${item.name} class="imageView">
+            <h3>${item.name}</h3>
+            <p>₦${item.price}</p>
+            <button class="add-to-cart" data-id=${item.id}>Add to Cart</button>
+        </div>
+        `;
+        */
+        
+    catalogListSection.innerHTML += `
+        <div class="product">
+            <img src="${propt.image}" alt="${propt.name} class="imageView">
+            <h3>${propt.name}</h3>
+            <p>quantity: ${propt.quantity}</p>
+            <p>₦${propt.price}</p>
+            <button class="add-to-cart" data-id=${propt.id}>Add to Cart</button>
+        </div>
+        `;
+        
+      console.log(catalogList);
+  
+      }else{
+          let propt = { id: idNo, name: name.value, price: price.value, image: getSrc2, quantity: quantity.value };
+        
+          catalogList.push(propt);
+          
+     // create the element to be visible
+   /*
+    catalogListSection.innerHTML += `
+        <div class="product">
+            <img src="./${folderdataBase}/${item.image}" alt="${item.name} class="imageView">
+            <h3>${item.name}</h3>
+            <p>₦${item.price}</p>
+            <button class="add-to-cart" data-id=${item.id}>Add to Cart</button>
+        </div>
+        `;
+        */
+        
+    catalogListSection.innerHTML += `
+        <div class="product">
+            <img src="${propt.image}" alt="${propt.name} class="imageView">
+            <h3>${propt.name}</h3>
+            <p>₦${propt.price}</p>
+            <button class="add-to-cart" data-id=${propt.id}>Add to Cart</button>
+        </div>
+        `;
+    
+      console.log(catalogList);
+      
+      }
+      
+    }
+    
+
+ 
+</script>
+</head>
+</html>

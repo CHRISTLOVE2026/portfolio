@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.product {
+    margin: 20px;
+    width: 200px;
+    transition: transform 0.2s;
+}
+
+.product:hover {
+    transform: scale(1.1);
+}
+
+.product img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+#cart {
+    display: none;
+    padding: 20px;
+}
+
+#cart-items {
+    padding: 20px;
+}
+
+#checkout-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#picDiv {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: green;
+}
+#picDiv img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+
+</style>
+<body>
+    <header>
+        <nav>
+            <h1>WILSON INTERIOR DASH BOARD</h1>
+            <ul>
+                <li><a href=""></a></li>                           
+                <li><a href="#cart">Cart (0)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <div class="product">
+
+        <div id="picDiv">
+          <img src="./photos/.jpg" alt=" " id="result">
+        </div><br><br><br><br>
+
+        <label>product.image:</label> <input placeholder="ENTER IMG OF Product" type="file" id="imageInpt" onchange="readFileFunc();"/><br><br>
+        
+        <label>product.name:</label> <input placeholder="ENTER NAME OF Product" type="text" id="nameInpt"/><br><br>
+
+        <label>product.price:</label> <input placeholder="ENTER NAME OF Product" type="text" id="priceInpt"/><br><br>
+
+        <button class="add-to-products" onclick="collectDataFunc();">Add to products</button>
+    </div>
+
+    <br><br><br>
+    <h3 id="tel1"></h3>
+
+</body>
+<script>
+
+let theIds = ["imageInpt","nameInpt","priceInpt"];
+theIds,array.forEach(element => {
+  theIds = document.getElementById(element);
+});
+
+let testArr = [];
+
+let imageSrc = "";
+function readFileFunc(){
+  var reader = new FileReader();
+  var file = document.getElementById("imageInpt").files[0];
+
+  reader.onload = function(e) {
+    document.getElementById("result").src = e.target.result;
+  }
+  reader.readAsDataURL(file);
+  imageSrc = e.target.result;
+
+  console.log(file.name, imageSrc);
+}
+
+function collectDataFunc(){
+  testArr.push({ id: testArr.length++, name: nameInpt.value, price: priceInpt.value, image: imageSrc });
+  console,log(testArr);
+}
+
+
+</script>
+</html>

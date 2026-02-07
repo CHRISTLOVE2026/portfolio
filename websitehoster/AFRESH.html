@@ -1,0 +1,52 @@
+<html>
+<head>
+  <body>
+    <header>
+        <nav>
+            <h1>WILSON INTERIOR</h1>
+            <ul>
+                <li><a href=""></a></li>                           
+                <li><a href="#cart">Cart (0)</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="products">
+            <!-- Products will be dynamically generated -->
+        </section>
+
+        <section id="cart">
+            <h2>Your Cart</h2>
+            <div id="cart-items"></div>
+            <button id="checkout-btn">Checkout</button>
+        </section>
+    </main>
+
+</body>
+    <script>
+   
+  let productsArea = document.getElementById("products");
+
+ let productsList = [
+    { id: 1, name: "Product 1", price: 100, image: "product1.jpg" },
+    { id: 2, name: "Product 2", price: 200, image: "product2.jpg" },
+    { id: 3, name: "Product 3", price: 300, image: "product3.jpg" },
+];
+
+  productsList.forEach((item) => {
+    let folderdataBase = "Photos";
+
+    productsArea.innerHTML += `
+        <div class="product">
+            <img src="./${folderdataBase}/${item.image}" alt="${item.name}">
+            <h3>${item.name}</h3>
+            <p>₦${item.price}</p>
+            <button class="add-to-cart" data-id=${item.id}">Add to Cart</button>
+        </div>
+        `;
+  });
+
+
+</script>
+</head>
+</html>

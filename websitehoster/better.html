@@ -1,0 +1,323 @@
+<html>
+<head>
+  <title>WILSON INTERIOR</title>
+</head>
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#productsSection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.product {
+    margin: 20px;
+    width: 200px;
+    transition: transform 0.2s;
+}
+
+.product:hover {
+    transform: scale(1.1);
+}
+
+.product img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+#cart {
+    display: none;
+    padding: 20px;
+}
+
+#cart-items {
+    padding: 20px;
+}
+
+#checkout-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#AlertDiv {
+  width: 300px;
+  padding-left: 20px;
+  position: absolute;
+  right: 30px;
+  top: 520px;
+  background-color: brown;
+  display: none;
+}
+
+#paymentSection {
+  display: none;
+}
+.imageViewer {
+  width: 700px;
+  height: 800px;
+  position: absolute;
+  top: 200px;
+  left: 350px;
+}
+
+#productsSection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+</style>
+  <body>
+    <header>
+        <nav>
+            <h1>WILSON INTERIOR</h1>
+            <ul>
+                <li><a href=""></a></li>                           
+                <li><a href="#cart">Cart (0)</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h3 id="tel1">hello world</h3>
+        <section id="productsSection">
+            <!-- Products will be dynamically generated -->
+        </section>
+        <section id="viewProduct">
+            <!-- Products will be boldly viewable here -->
+        </section>
+
+        <section id="cart">
+            <h2>Your Cart</h2>
+            <div id="cart-items"></div>
+            <button id="checkout-btn">Checkout</button>
+        </section>
+        
+        <section id="AlertDiv">
+          <h3 id="AlertTeller"></h3>
+          
+          <button class="confirmed-btn" data-id=confirmedBtn>confirmed</button>
+        </section>
+        
+        <section id="paymentSection">
+          processing........
+        </section>
+    </main>
+
+</body>
+    <script>
+  
+  let theIds = ["productsSection","cart","viewProduct","AlertDiv","AlertTeller","tel1"];
+    imageView = document.getElementsByTagName("img");
+  
+  theIds.forEach((item) => {
+    item = document.getElementById(item);
+  });
+  
+  Array.prototype.HowManyIndItemInArr = function(product){
+    
+  let count = 0;
+    this.forEach((item) => {
+      if(item === product){
+        count ++
+      }
+    });
+    return (count)
+    
+  }
+
+ let totalGlobal = 0;
+ let productsList = [
+    { id: 1, name: "Product 1", price: 100, image: "product1.jpg" },
+    { id: 2, name: "Product 2", price: 200, image: "product2.jpg" },
+    { id: 3, name: "Product 3", price: 300, image: "product3.jpg" },
+];
+ let cart = [];
+ let productInCartArr = [];
+ let classTarget ;
+
+ // create the element to be visible
+productsList.forEach((item) => {
+    let folderdataBase = "Photos";
+
+    productsSection.innerHTML += `
+        <div class="product">
+            <img src="./${folderdataBase}/${item.image}" alt="${item.name}" class="imageElem">
+            <h3>${item.name}</h3>
+            <p>₦${item.price}</p>
+            <button class="add-to-cart" data-id=${item.id}>Add to Cart</button>
+        </div>
+        `;
+  });
+
+ // Add to cart and my button functionality
+document.addEventListener("click", e => {
+  
+   if (e.target.classList.contains("add-to-cart")) {
+        const productId = e.target.dataset.id;
+        const product = productsList.find((p) => p.id == productId);
+  
+        cart.push(product);
+        productInCartArr.push(product.name);
+        updateCart();
+        
+        document.getElementById('cart').style.display = 'block';
+        AlertDiv.style.display = "none";
+        
+        
+   }else if (e.target.classList.contains("remove-from-cart")) {
+        const productId = e.target.dataset.id;
+        //const product = cart.find((p) => p.id == productId);
+       
+       // tel1.innerHTML = productId;
+  
+        cart.splice(productId,1);
+        productInCartArr.splice(productId,1);
+        
+        updateCart();
+        
+       let checkoutBtn = document.getElementById('checkout-btn');
+       
+        checkoutBtn.style.display = 'block';
+        AlertDiv.style.display = "none";
+        
+        if(cart.length <= 0) checkoutBtn.style.display = "none";
+  
+   }else if (e.target.classList.contains("confirmed-btn")) {
+     
+      // cart.style.display = "none";
+      AlertDiv.style.display = "none";
+      document.getElementById("paymentSection").style.display = "block";
+   }else if (e.target.classList.contains("imageElem")) {
+     
+      viewProduct.style.display = "block";
+      // viewProduct.innerHTML = ` <img src="${e.target.src}" alt="${item.name} class="imageViewer">`;
+      viewProduct.innerHTML = ` <img src="${e.target.src}" alt="" class="imageViewer">`;
+      
+   }else if (!e.target.classList.contains("imageElem")){
+     viewProduct.innerHTML = "";
+   }
+   
+   
+   
+   if (e.target.href && e.target.href.includes('#cart')) {
+      e.preventDefault();
+      document.getElementById('cart').style.display = 'block';
+    }
+    
+});
+
+ // review check-out item functionality
+document.getElementById("checkout-btn").addEventListener("click", () => {
+    
+      AlertDiv.style.display = "block";
+      AlertTeller.innerHTML = "<b><ul>ITEMS BREAK DOWN</ul></b> <br><br>";
+      
+    let newArray = removeDuplicates(productInCartArr).sort();
+    
+    newArray.forEach((item) => {
+      
+      AlertTeller.innerHTML += `
+         <span class="item-li">${item}</span> : <span class="No-of-item">${ productInCartArr.HowManyIndItemInArr(item) }</span> <br>
+      `;
+      
+    });
+    
+      AlertTeller.innerHTML += `<br><br><br> <b>total :  ₦${totalGlobal}</b>`;
+    
+});
+
+
+
+// Update cart
+function updateCart() {
+    const cartItems = document.getElementById('cart-items');
+    cartItems.innerHTML = '';
+    let total = 0;
+    cart.forEach((item,index) => {
+        cartItems.innerHTML += `
+         <div class="product">
+            <p>${item.name} - ₦${item.price}</p> 
+            <button class="remove-from-cart" data-id=${index}>Delete</button>
+         </div>
+        `;
+        
+        total += item.price;
+        totalGlobal = total;
+    });
+    
+    //document.querySelector('nav a[href="                                              
+    document.getElementById('checkout-btn').innerHTML = `Checkout ₦${total}`;
+}
+
+function removeDuplicates(arr) {
+  // Create a new Set from the array to automatically remove duplicates
+  const uniqueSet = new Set(arr);
+
+  // Convert the Set back into an Array using the spread syntax
+  const uniqueArray = [...uniqueSet];
+
+  return uniqueArray;
+}
+
+function countDuplicates(arr) {
+    const counts = {};
+    let duplicateCount = 0;
+
+    // 1. Count occurrences of each element
+    for (const element of arr) {
+        counts[element] = (counts[element] || 0) + 1;
+    }
+
+    // 2. Iterate through the counts to find duplicates
+    for (const element in counts) {
+        // A duplicate is any element that appeared more than once
+        if (counts[element] > 1) {
+            // The number of extra occurrences IS the number of duplicates for that specific value
+            // e.g., if "a" appears 3 times, there are 2 duplicates of "a"
+            duplicateCount += (counts[element] - 1);
+        }
+    }
+
+    return duplicateCount;
+}
+
+
+</script>
+</head>
+</html>
